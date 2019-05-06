@@ -1,0 +1,58 @@
+<h1>Orders</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Customer</th>
+      <th>Time</th>
+      <th>Date</th>
+      <th>OrderStand</th>
+      <th></th>
+    </tr>
+  </thead> 
+  <tbody>
+    <tr *ngFor="let  order of product; let i=index">
+      <td>{{ order.shipping.name }}</td>
+      <td>{{ order.datePlaced| date: 'h:mm a'}}</td>
+      <td>{{ order.datePlaced | date: 'MMMM d, y'}}</td> 
+      <td>{{ order.shipping.startorder}}</td> 
+      <td>
+        <ng-template #content let-c="close" let-d="dismiss">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title"> {{ order.shipping.startorder |  uppercase}} ORDER </h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" >
+            <ul class="list-group list-group-flush">
+              <li  class="list-group-item" *ngIf="order.shipping.startorder === 'delivery'">Delivery Address: {{ order.shipping.addressLine1}},{{ order.shipping.addressLine2}},{{ order.shipping.city}} </li>
+              <li  class="list-group-item" *ngIf="order.shipping.startorder === 'pickup'">Phone: {{order.shipping.phone}} </li>
+              <li  class="list-group-item" *ngIf="order.shipping.startorder === 'pickup'">PickUp At: {{order.pickuptime.hour}}:{{order.pickuptime.minute}} </li>
+    
+            </ul>
+            <hr>
+            <div class="card">
+              <div class="card-body">
+                  <h6 class="card-title">Order Summary</h6>
+                  <ul class="list-group list-group-flush" *ngFor="let orderitem of order.items; let i=index">   
+                      <li class="list-group-item">{{i+1}}: {{order.items[i].title}}  ...... {{order.items[i].price | currency:'AUD':true}} * {{order.items[i].quantity}}</li> 
+      
+                   </ul>   
+                   <hr> Total Price: {{order.totalPrice | currency:'AUD':true}}
+                
+
+              </div>
+            </div>
+            
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Print</button>
+          </div>
+        </ng-template>
+        
+        <button class="btn btn-lg btn-outline-primary" (click)="open(content)">View Order</button>
+      </td>
+    </tr>
+  </tbody> 
+</table>
